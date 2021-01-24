@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstring>
 #include <string>
+#include <stdexcept>
 
 class MapElement{
 private:
@@ -11,7 +12,9 @@ private:
 public:
     MapElement(std::string path){
         this->texture = new sf::Texture();
-        this->texture->loadFromFile(path);
+        if(!this->texture->loadFromFile(path)){
+            throw std::runtime_error("The texture file has not be found!");
+        }
     }
 
     void setBomb(bool Bomb){
@@ -433,7 +436,7 @@ int main()
     // Create the main window
     sf::RenderWindow app(sf::VideoMode(mapWidth*cellSize + 20,mapHeight*cellSize + 20), "Saper",sf::Style::Titlebar | sf::Style::Close);
 
-    Map mainMap(mapWidth,mapHeight,cellSize,20);
+    Map mainMap(mapWidth,mapHeight,cellSize,60);
     MapVisualizer drawer(&app, &mainMap); //adres g³ownego obiektu rysujacego, szer pixela komorki jednej
     GameEngine game(&drawer, &app);
 	// Start the game loop
